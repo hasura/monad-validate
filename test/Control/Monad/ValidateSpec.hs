@@ -1,11 +1,17 @@
 {-# OPTIONS_GHC -foptimal-applicative-do #-}
 {-# LANGUAGE AllowAmbiguousTypes #-}
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE QuasiQuotes #-}
 {-# LANGUAGE TemplateHaskell #-}
 
 module Control.Monad.ValidateSpec (spec) where
 
+#if MIN_VERSION_aeson(2,0,0)
+import qualified Data.Aeson.Key as K
+import qualified Data.Aeson.KeyMap as KM
+#elif
 import qualified Data.HashMap.Strict as M
+#endif
 import qualified Data.Text as T
 import qualified Data.Vector as V
 
@@ -14,6 +20,9 @@ import Control.Monad.Reader
 import Control.Monad.Except
 import Data.Aeson (Object, Value(..))
 import Data.Aeson.QQ (aesonQQ)
+#if MIN_VERSION_aeson(2,0,0)
+import Data.Bifunctor (first)
+#endif
 import Data.Foldable
 import Data.Functor
 import Data.Scientific (toBoundedInteger)
@@ -143,11 +152,25 @@ validateQueryRequest req = withObject "request" req $ \o -> do
     withObject name v f = case v of { Object o -> f o; _ -> refuteErr $ JSONBadValue name v }
 
     withKey :: Object -> Text -> (Value -> m a) -> m a
-    withKey o k f = maybe (refuteErr $ JSONMissingKey k) (pushPath k . f) $ M.lookup k o
+    withKey o k f = maybe (refuteErr $ JSONMissingKey k) (pushPath k . f) $ lookupCompat k o
+
+    lookupCompat =
+#if MIN_VERSION_aeson(2,0,0)
+      KM.lookup . K.fromText
+#elif
+      M.lookup
+#endif
 
     withSingleKeyObject :: Text -> Value -> (Text -> Value -> m a) -> m a
-    withSingleKeyObject name i f = withObject name i $ \o -> case M.toList o of
+    withSingleKeyObject name i f = withObject name i $ \o -> case toListCompat o of
       { [(k, v)] -> pushPath k $ f k v; _ -> refuteErr $ JSONBadValue name i }
+
+    toListCompat =
+#if MIN_VERSION_aeson(2,0,0)
+      map (first K.toText) . KM.toList
+#elif
+      M.toList
+#endif
 
 spec :: Spec
 spec = describe "ValidateT" $ do

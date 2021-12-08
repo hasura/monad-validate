@@ -123,7 +123,7 @@ test-suite monad-validate-test-suite
       TypeFamilies
   ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -rtsopts -threaded -with-rtsopts=-N
   build-depends:
-      aeson <1.6
+      aeson
     , aeson-qq
     , base >=4.12 && <5
     , exceptions >=0.9 && <1
