@@ -1,4 +1,4 @@
-cabal-version: 1.12
+cabal-version: 2.0
 
 -- This file has been generated from package.yaml by hpack version 0.34.4.
 --
@@ -123,7 +123,7 @@ test-suite monad-validate-test-suite
       TypeFamilies
   ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -rtsopts -threaded -with-rtsopts=-N
   build-depends:
-      aeson
+      aeson <1.6
     , aeson-qq
     , base >=4.12 && <5
     , exceptions >=0.9 && <1
@@ -137,4 +137,6 @@ test-suite monad-validate-test-suite
     , transformers-base <1
     , unordered-containers
     , vector
+  build-tool-depends:
+    hspec-discover:hspec-discover
   default-language: Haskell2010
