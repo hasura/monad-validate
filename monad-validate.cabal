@@ -1,0 +1,142 @@
+cabal-version: 2.0
+
+-- This file has been generated from package.yaml by hpack version 0.34.4.
+--
+-- see: https://github.com/sol/hpack
+
+name:           monad-validate
+version:        1.2.0.0
+synopsis:       A monad transformer for data validation.
+description:    Provides the 'ValidateT' monad transformer, designed for writing data validations that provide
+                high-quality error reporting without much effort. 'ValidateT' automatically exploits the data
+                dependencies of your program—as encoded implicitly in uses of 'fmap', '<*>', and '>>='—to report
+                as many errors as possible upon failure instead of completely aborting at the first one. See
+                "Control.Monad.Validate" for more information.
+category:       Control
+homepage:       https://github.com/hasura/monad-validate#readme
+bug-reports:    https://github.com/hasura/monad-validate/issues
+author:         Alexis King <lexi.lambda@gmail.com>
+maintainer:     Alexis King <lexi.lambda@gmail.com>
+copyright:      2019 Hasura
+license:        ISC
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    CHANGELOG.md
+    LICENSE
+    package.yaml
+    README.md
+    stack.yaml
+
+source-repository head
+  type: git
+  location: https://github.com/hasura/monad-validate
+
+library
+  exposed-modules:
+      Control.Monad.Validate
+      Control.Monad.Validate.Class
+      Control.Monad.Validate.Internal
+  other-modules:
+      Paths_monad_validate
+  hs-source-dirs:
+      src
+  default-extensions:
+      ApplicativeDo
+      BangPatterns
+      ConstraintKinds
+      DataKinds
+      DeriveFoldable
+      DeriveFunctor
+      DeriveGeneric
+      DeriveLift
+      DeriveTraversable
+      DerivingVia
+      EmptyCase
+      ExistentialQuantification
+      FlexibleContexts
+      FlexibleInstances
+      FunctionalDependencies
+      GADTs
+      GeneralizedNewtypeDeriving
+      InstanceSigs
+      KindSignatures
+      LambdaCase
+      MultiParamTypeClasses
+      MultiWayIf
+      NamedFieldPuns
+      OverloadedStrings
+      RankNTypes
+      ScopedTypeVariables
+      StandaloneDeriving
+      TupleSections
+      TypeApplications
+      TypeFamilies
+  ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints
+  build-depends:
+      base >=4.12 && <5
+    , exceptions >=0.9 && <1
+    , monad-control ==1.*
+    , mtl
+    , transformers >=0.5.6
+    , transformers-base <1
+  default-language: Haskell2010
+
+test-suite monad-validate-test-suite
+  type: exitcode-stdio-1.0
+  main-is: Main.hs
+  other-modules:
+      Control.Monad.ValidateSpec
+      Paths_monad_validate
+  hs-source-dirs:
+      test
+  default-extensions:
+      ApplicativeDo
+      BangPatterns
+      ConstraintKinds
+      DataKinds
+      DeriveFoldable
+      DeriveFunctor
+      DeriveGeneric
+      DeriveLift
+      DeriveTraversable
+      DerivingVia
+      EmptyCase
+      ExistentialQuantification
+      FlexibleContexts
+      FlexibleInstances
+      FunctionalDependencies
+      GADTs
+      GeneralizedNewtypeDeriving
+      InstanceSigs
+      KindSignatures
+      LambdaCase
+      MultiParamTypeClasses
+      MultiWayIf
+      NamedFieldPuns
+      OverloadedStrings
+      RankNTypes
+      ScopedTypeVariables
+      StandaloneDeriving
+      TupleSections
+      TypeApplications
+      TypeFamilies
+  ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -rtsopts -threaded -with-rtsopts=-N
+  build-depends:
+      aeson
+    , aeson-qq
+    , base >=4.12 && <5
+    , exceptions >=0.9 && <1
+    , hspec
+    , monad-control ==1.*
+    , monad-validate
+    , mtl
+    , scientific
+    , text
+    , transformers >=0.5.6
+    , transformers-base <1
+    , unordered-containers
+    , vector
+  build-tool-depends:
+    hspec-discover:hspec-discover
+  default-language: Haskell2010
